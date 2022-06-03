@@ -21,8 +21,8 @@ export default class Game extends Component {
 			10: false,
 			11: false,
 			12: false,
-			card1: "",
-			card2: "",
+			card1: [],
+			card2: [],
 			counter: 0,
 		};
 
@@ -31,6 +31,8 @@ export default class Game extends Component {
 		this.handleClick = this.handleClick.bind(this);
 		this.mapCards2 = this.mapCards2.bind(this);
 		this.handleMatch = this.handleMatch.bind(this);
+		this.checkMatch = this.checkMatch.bind(this);
+		// this.handleFilter = this.handleFilter.bind(this);
 	}
 
 	handleClick(id) {
@@ -39,18 +41,63 @@ export default class Game extends Component {
 		});
 	}
 
+	checkMatch(card1, card2) {
+		console.log(card1, card2);
+		if (
+			this.state.card1 != [] &&
+			this.state.card2 != [] &&
+			this.state.card1.front == this.state.card2.front
+		) {
+			this.setState({
+				[card1.id]: false,
+				[card2.id + 6]: false,
+				score: this.state.score + 1,
+				card1: [],
+				card2: [],
+			});
+		} else if (
+			this.state.card1 != [] &&
+			this.state.card2 != [] &&
+			this.state.card1 != this.state.card2
+		) {
+			this.setState({
+				[card1.id]: false,
+				[card2.id + 6]: false,
+			});
+		} else if (this.state.card1 == [] && this.state.card2 == []) {
+			this.setState({
+				[card1.id]: false,
+				[card2.id + 6]: false,
+			});
+		}
+	}
+
+	// handleFilter(filter) {
+	// 	if(filter == )
+	// }
+
 	handleMatch(card) {
+		let card1 = [];
+		let card2 = [];
+		if (this.state.counter % 2 != 0) {
+			card1 = card;
+		} else {
+			card2 = card;
+		}
 		if (this.state.counter % 2 == 0) {
 			this.setState({
-				card1: card.front,
+				card1: card,
 				counter: this.state.counter + 1,
 			});
 		} else {
 			this.setState({
-				card2: card.front,
+				card2: card,
 				counter: this.state.counter + 1,
 			});
 		}
+		setTimeout(() => {
+			this.checkMatch(card1, card2);
+		}, 10);
 	}
 
 	mapCards() {
@@ -64,7 +111,7 @@ export default class Game extends Component {
 							this.handleMatch(card);
 						}}
 					>
-						{this.state[card.id] == false ? (
+						{this.state[card.id] === false ? (
 							<img id={card.id} className="card-back" src={card.back} />
 						) : (
 							<img id={card.id} className="card-front" src={card.front} />
