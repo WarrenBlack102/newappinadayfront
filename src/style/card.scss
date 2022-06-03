@@ -1,0 +1,13 @@
+.game-wrapper{
+    width: 100vw;
+    height: 80vh;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+
+    img{
+        width: 150px;
+        height: 150px;
+        position: relative;
+    }
+}
