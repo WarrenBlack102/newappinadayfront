@@ -9,32 +9,66 @@ export default class Game extends Component {
 			score: 0,
 			gameNumber: 1,
 			cards: [],
-			clicked: false,
-			id: 0,
+			1: false,
+			2: false,
+			3: false,
+			4: false,
+			5: false,
+			6: false,
+			7: false,
+			8: false,
+			9: false,
+			10: false,
+			11: false,
+			12: false,
+			card1: "",
+			card2: "",
 		};
 
 		this.getCards = this.getCards.bind(this);
 		this.mapCards = this.mapCards.bind(this);
 		this.handleClick = this.handleClick.bind(this);
-		this.componentRef = React.createRef();
+		this.mapCards2 = this.mapCards2.bind(this);
 	}
 
-	handleClick(id) {
-		document.getElementById;
+	handleClick(card) {
+		let counter = 0;
 		this.setState({
-			clicked: !this.state.clicked,
+			[card.id]: !this.state[id],
 		});
+		if (counter % 2 == 0) {
+			counter = counter + 1;
+			this.setState({
+				card1: card.front,
+			});
+		}
 	}
 
 	mapCards() {
 		return this.state.cards.map((card) => {
 			return (
 				<div className="card" key={card.id}>
-					<button onClick={() => this.handleClick()}>
-						{this.state.clicked ? (
-							<img id={card.id} className="card-front" src={card.front} />
-						) : (
+					<button onClick={() => this.handleClick(card)}>
+						{this.state[card.id] == false ? (
 							<img id={card.id} className="card-back" src={card.back} />
+						) : (
+							<img id={card.id} className="card-front" src={card.front} />
+						)}
+					</button>
+				</div>
+			);
+		});
+	}
+
+	mapCards2() {
+		return this.state.cards.map((card) => {
+			return (
+				<div className="card" key={card.id + 6}>
+					<button onClick={() => this.handleClick(card.id + 6)}>
+						{this.state[card.id + 6] == false ? (
+							<img id={card.id} className="card-back" src={card.back} />
+						) : (
+							<img id={card.id} className="card-front" src={card.front} />
 						)}
 					</button>
 				</div>
@@ -57,6 +91,11 @@ export default class Game extends Component {
 	}
 
 	render() {
-		return <div className="game-wrapper">{this.mapCards()}</div>;
+		return (
+			<div className="game-wrapper">
+				{this.mapCards()}
+				{this.mapCards2()}
+			</div>
+		);
 	}
 }
